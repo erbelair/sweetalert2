@@ -230,7 +230,7 @@ var openModal = function(animation, onComplete) {
  */
 var fixVerticalPosition = function() {
   var modal = dom.getModal();
-  
+
   if (modal !== null) {
     modal.style.marginTop = dom.getTopMargin(modal);
   }
@@ -795,7 +795,10 @@ function sweetAlert() {
 /*
  * Global function for chaining sweetAlert modals
  */
-sweetAlert.queue = function(steps) {
+sweetAlert.queue = function(steps, cancelAll) {
+  if (cancelAll === undefined) {
+    cancelAll = true;
+  }
   return new Promise(function(resolve, reject) {
     (function step(i, callback) {
       var nextStep = null;
@@ -808,7 +811,11 @@ sweetAlert.queue = function(steps) {
         sweetAlert(nextStep).then(function() {
           step(i+1, callback);
         }, function(dismiss) {
-          reject(dismiss);
+          if (cancelAll) {
+            reject(dismiss);
+          } else {
+            step(i+1, callback);
+          }
         });
       } else {
         resolve();

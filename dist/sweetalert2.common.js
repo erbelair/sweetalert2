@@ -623,7 +623,9 @@ var openModal = function(animation, onComplete) {
 var fixVerticalPosition = function() {
   var modal = getModal();
 
-  modal.style.marginTop = getTopMargin(modal);
+  if (modal !== null) {
+    modal.style.marginTop = getTopMargin(modal);
+  }
 };
 
 function modalDependant() {
@@ -1185,7 +1187,10 @@ function sweetAlert() {
 /*
  * Global function for chaining sweetAlert modals
  */
-sweetAlert.queue = function(steps) {
+sweetAlert.queue = function(steps, cancelAll) {
+  if (cancelAll === undefined) {
+    cancelAll = true;
+  }
   return new Promise(function(resolve, reject) {
     (function step(i, callback) {
       var nextStep = null;
@@ -1198,7 +1203,11 @@ sweetAlert.queue = function(steps) {
         sweetAlert(nextStep).then(function() {
           step(i+1, callback);
         }, function(dismiss) {
-          reject(dismiss);
+          if (cancelAll) {
+            reject(dismiss);
+          } else {
+            step(i+1, callback);
+          }
         });
       } else {
         resolve();
@@ -1313,7 +1322,7 @@ sweetAlert.init = function() {
     sweetAlert.resetValidationError();
   };
 
-  $customImg.onload = fixVerticalPosition;
+  $customImg.onload = $customImg.onerror = fixVerticalPosition;
 
   window.addEventListener('resize', fixVerticalPosition, false);
 };
