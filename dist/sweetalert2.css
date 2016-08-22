@@ -182,7 +182,6 @@
       position: absolute;
       width: 60px;
       height: 120px;
-      background: #fff;
       -webkit-transform: rotate(45deg);
               transform: rotate(45deg); }
     .swal2-icon.swal2-success::before {
@@ -214,7 +213,6 @@
     .swal2-icon.swal2-success .fix {
       width: 7px;
       height: 90px;
-      background-color: #fff;
       position: absolute;
       left: 28px;
       top: 8px;
@@ -402,15 +400,15 @@
     width: 0;
     left: 1px;
     top: 19px; }
-  54% {
+  25% {
     width: 0;
     left: 1px;
     top: 19px; }
-  70% {
+  50% {
     width: 50px;
     left: -8px;
     top: 37px; }
-  84% {
+  80% {
     width: 17px;
     left: 21px;
     top: 48px; }
@@ -424,15 +422,15 @@
     width: 0;
     left: 1px;
     top: 19px; }
-  54% {
+  25% {
     width: 0;
     left: 1px;
     top: 19px; }
-  70% {
+  50% {
     width: 50px;
     left: -8px;
     top: 37px; }
-  84% {
+  80% {
     width: 17px;
     left: 21px;
     top: 48px; }
@@ -446,11 +444,11 @@
     width: 0;
     right: 46px;
     top: 54px; }
-  65% {
+  43% {
     width: 0;
     right: 46px;
     top: 54px; }
-  84% {
+  80% {
     width: 55px;
     right: 0;
     top: 35px; }
@@ -464,11 +462,11 @@
     width: 0;
     right: 46px;
     top: 54px; }
-  65% {
+  43% {
     width: 0;
     right: 46px;
     top: 54px; }
-  84% {
+  80% {
     width: 55px;
     right: 0;
     top: 35px; }
@@ -506,12 +504,12 @@
             transform: rotate(-405deg); } }
 
 .animate-success-tip {
-  -webkit-animation: animate-success-tip 0.75s;
-          animation: animate-success-tip 0.75s; }
+  -webkit-animation: animate-success-tip 0.625s;
+          animation: animate-success-tip 0.625s; }
 
 .animate-success-long {
-  -webkit-animation: animate-success-long 0.75s;
-          animation: animate-success-long 0.75s; }
+  -webkit-animation: animate-success-long 0.625s;
+          animation: animate-success-long 0.625s; }
 
 .swal2-icon.swal2-success.animate::after {
   -webkit-animation: rotatePlaceholder 4.25s ease-in;
