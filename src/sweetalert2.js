@@ -795,12 +795,12 @@ function sweetAlert() {
 /*
  * Global function for chaining sweetAlert modals
  */
-sweetAlert.queue = function(steps, cancelAll) {
-  if (cancelAll === undefined) {
-    cancelAll = true;
+sweetAlert.queue = function(steps, resolveCallback, rejectCallback, rejectAll) {
+  if (rejectAll === undefined) {
+    rejectAll = true;
   }
   return new Promise(function(resolve, reject) {
-    (function step(i, callback) {
+    (function step(i, resolveCallback, rejectCallback) {
       var nextStep = null;
       if (isFunction(steps)) {
         nextStep = steps(i);
@@ -809,18 +809,24 @@ sweetAlert.queue = function(steps, cancelAll) {
       }
       if (nextStep) {
         sweetAlert(nextStep).then(function() {
-          step(i+1, callback);
+          if (typeof resolveCallback === 'function') {
+            resolveCallback(nextStep);
+          }
+          step(i+1, resolveCallback, rejectCallback);
         }, function(dismiss) {
-          if (cancelAll) {
+          if (rejectAll) {
             reject(dismiss);
           } else {
-            step(i+1, callback);
+            if (typeof rejectCallback === 'function') {
+              rejectCallback(dismiss, nextStep);
+            }
+            step(i+1, resolveCallback, rejectCallback);
           }
         });
       } else {
         resolve();
       }
-    })(0);
+    })(0, resolveCallback, rejectCallback);
   });
 };
 
@@ -854,15 +860,15 @@ sweetAlert.close = sweetAlert.closeModal = function(onComplete) {
         dom._hide(modal);
         dom.fadeOut(dom.getOverlay(), 0);
       }
-
-      dom.resetPrevState();
     });
   } else {
     // Otherwise, clean immediately
     dom._hide(modal);
     dom._hide(dom.getOverlay());
-    dom.resetPrevState();
   }
+
+  dom.resetPrevState();
+
   if (onComplete !== null && typeof onComplete === 'function') {
     onComplete.call(this, modal);
   }

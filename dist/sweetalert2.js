@@ -1190,12 +1190,12 @@ function sweetAlert() {
 /*
  * Global function for chaining sweetAlert modals
  */
-sweetAlert.queue = function(steps, cancelAll) {
-  if (cancelAll === undefined) {
-    cancelAll = true;
+sweetAlert.queue = function(steps, resolveCallback, rejectCallback, rejectAll) {
+  if (rejectAll === undefined) {
+    rejectAll = true;
   }
   return new Promise(function(resolve, reject) {
-    (function step(i, callback) {
+    (function step(i, resolveCallback, rejectCallback) {
       var nextStep = null;
       if (isFunction(steps)) {
         nextStep = steps(i);
@@ -1204,19 +1204,24 @@ sweetAlert.queue = function(steps, cancelAll) {
       }
       if (nextStep) {
         sweetAlert(nextStep).then(function() {
-          step(i+1, callback);
+          if (typeof resolveCallback === 'function') {
+            resolveCallback(nextStep);
+          }
+          step(i+1, resolveCallback, rejectCallback);
         }, function(dismiss) {
-          console.log('dismissed. cancelAll=' + cancelAll);
-          if (cancelAll) {
+          if (rejectAll) {
             reject(dismiss);
           } else {
-            step(i+1, callback);
+            if (typeof rejectCallback === 'function') {
+              rejectCallback(dismiss, nextStep);
+            }
+            step(i+1, resolveCallback, rejectCallback);
           }
         });
       } else {
         resolve();
       }
-    })(0);
+    })(0, resolveCallback, rejectCallback);
   });
 };
 
@@ -1250,15 +1255,15 @@ sweetAlert.close = sweetAlert.closeModal = function(onComplete) {
         _hide(modal);
         fadeOut(getOverlay(), 0);
       }
-
-      resetPrevState();
     });
   } else {
     // Otherwise, clean immediately
     _hide(modal);
     _hide(getOverlay());
-    resetPrevState();
   }
+
+  resetPrevState();
+
   if (onComplete !== null && typeof onComplete === 'function') {
     onComplete.call(this, modal);
   }
