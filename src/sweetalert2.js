@@ -852,15 +852,15 @@ sweetAlert.close = sweetAlert.closeModal = function(onComplete) {
         dom._hide(modal);
         dom.fadeOut(dom.getOverlay(), 0);
       }
-
-      dom.resetPrevState();
     });
   } else {
     // Otherwise, clean immediately
     dom._hide(modal);
     dom._hide(dom.getOverlay());
-    dom.resetPrevState();
   }
+
+  dom.resetPrevState();
+
   if (onComplete !== null && typeof onComplete === 'function') {
     onComplete.call(this, modal);
   }
