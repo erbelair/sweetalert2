@@ -1,5 +1,5 @@
 /*!
- * sweetalert2 v4.1.7
+ * sweetalert2 v4.1.8
  * Released under the MIT License.
  */
 'use strict';
@@ -364,7 +364,6 @@ var animationEndEvent = (function() {
   var testEl = document.createElement('div'),
     transEndEventNames = {
       'WebkitAnimation': 'webkitAnimationEnd',
-      'MozAnimation': 'animationend',
       'OAnimation': 'oAnimationEnd oanimationend',
       'msAnimation': 'MSAnimationEnd',
       'animation': 'animationend'
@@ -1203,6 +1202,7 @@ sweetAlert.queue = function(steps, cancelAll) {
         sweetAlert(nextStep).then(function() {
           step(i+1, callback);
         }, function(dismiss) {
+          console.log('dismissed. cancelAll=' + cancelAll);
           if (cancelAll) {
             reject(dismiss);
           } else {
@@ -1349,7 +1349,7 @@ sweetAlert.resetDefaults = function() {
   modalParams = extend({}, defaultParams);
 };
 
-sweetAlert.version = '4.1.7';
+sweetAlert.version = '4.1.8';
 
 window.sweetAlert = window.swal = sweetAlert;
 
