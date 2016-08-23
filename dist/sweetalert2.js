@@ -396,8 +396,10 @@ var resetPrevState = function() {
     states.previousActiveElement.focus();
   }
   clearTimeout(modal.timeout);
+};
 
-  // Remove dynamically created media query
+// Remove dynamically created media query
+var removeMediaQuery = function() {
   var head = document.getElementsByTagName('head')[0];
   var mediaquery = document.getElementById(mediaqueryId);
   if (mediaquery) {
@@ -1264,12 +1266,14 @@ sweetAlert.close = sweetAlert.closeModal = function(onComplete) {
       if (hasClass(modal, 'hide-swal2')) {
         _hide(modal);
         fadeOut(getOverlay(), 0);
+        removeMediaQuery();
       }
     });
   } else {
     // Otherwise, clean immediately
     _hide(modal);
     _hide(getOverlay());
+    removeMediaQuery();
   }
 
   resetPrevState();
