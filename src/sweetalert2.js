@@ -851,12 +851,14 @@ sweetAlert.close = sweetAlert.closeModal = function(onComplete) {
       if (dom.hasClass(modal, 'hide-swal2')) {
         dom._hide(modal);
         dom.fadeOut(dom.getOverlay(), 0);
+        dom.removeMediaQuery();
       }
     });
   } else {
     // Otherwise, clean immediately
     dom._hide(modal);
     dom._hide(dom.getOverlay());
+    dom.removeMediaQuery();
   }
 
   dom.resetPrevState();
